@@ -8,7 +8,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:803731083858:android:48e07ac95f37f866e9c58b",
+        "mobilesdk_app_id": "1:803731083858:android:15317ba469d56354e9c58b",
         "android_client_info": {
           "package_name": "com.example.attendancemanager"
         }
