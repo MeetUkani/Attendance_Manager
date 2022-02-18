@@ -4,13 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,6 +21,8 @@ public class Login_Activity extends AppCompatActivity {
     private EditText entered_Password;
     private Button login;
     private FirebaseAuth auth;
+    private DatabaseReference databaseReference;
+    private Login_Modal login_Modal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,22 +33,17 @@ public class Login_Activity extends AppCompatActivity {
         entered_Password = findViewById(R.id.password);
         login = findViewById(R.id.login);
 
-        login.setOnClickListener(new View.OnClickListener() {
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View view) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Toast.makeText(Login_Activity.this, "12345", Toast.LENGTH_SHORT).show();
+                login_Modal = new Login_Modal("MeetUkani","12345");
+                databaseReference.child("login_credential").setValue(login_Modal);
+            }
 
-                String username = entered_Username.toString();
-                String password = entered_Password.toString();
-
-                if (password.length() < 6) {
-                    Toast.makeText(Login_Activity.this, "Password Length is Too Short", Toast.LENGTH_SHORT).show();
-                } else
-                    auth.signInWithEmailAndPassword(username,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                        @Override
-                        public void onSuccess(AuthResult authResult) {
-                            Toast.makeText(Login_Activity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
             }
         });
     }
